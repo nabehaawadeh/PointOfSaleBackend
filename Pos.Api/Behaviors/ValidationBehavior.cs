@@ -1,6 +1,5 @@
 using FluentValidation;
 using MediatR;
-using Pos.Api.Exceptions;
 
 namespace Pos.Api.Behaviors;
 
@@ -30,7 +29,11 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
             if (failures.Count != 0)
             {
-                throw new Pos.Api.Exceptions.ValidationException(failures.Select(f => f.ErrorMessage));
+                var errors = failures
+                    .Select(f => $"{f.PropertyName}: {f.ErrorMessage}")
+                    .ToList();
+
+                throw new Pos.Api.Exceptions.ValidationException(errors);
             }
         }
 

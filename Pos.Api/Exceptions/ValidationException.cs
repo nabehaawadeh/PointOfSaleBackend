@@ -10,7 +10,7 @@ public class ValidationException : Exception
     }
 
     public ValidationException(IEnumerable<string> errors)
-        : base(string.Join(" | ", errors))
+        : base("One or more validation errors occurred.")
     {
         Errors = errors.ToList();
     }
